@@ -8,32 +8,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Yellowtail&family=Saira+Condensed:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-0:#070a14;
-    --bg-1:#0d1226;
-    --bg-2:#151b36;
-    --pink:#ff59c6;
-    --pink-soft:#ff8fdb;
-    --lilac:#9b8cff;
-    --ink:#f3f1fb;
-    --ink-dim:#a9aecb;
-    --ink-faint:#6b7093;
-    --line:rgba(255,255,255,0.08);
-    --glow: 0 0 18px rgba(255,89,198,0.55), 0 0 40px rgba(155,140,255,0.25);
+    --bg-0:#ffffff;
+    --bg-1:#f5f6fa;
+    --bg-2:#ffffff;
+    --pink:#db2777;
+    --pink-soft:#be185d;
+    --lilac:#7c3aed;
+    --ink:#14162b;
+    --ink-dim:#475569;
+    --ink-faint:#64748b;
+    --line:rgba(15,23,42,0.12);
+    --glow: 0 6px 22px rgba(219,39,119,0.20), 0 2px 10px rgba(124,58,237,0.12);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(255,89,198,0.12), transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(155,140,255,0.10), transparent 55%),
+      radial-gradient(1200px 600px at 15% -10%, rgba(219,39,119,0.06), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(124,58,237,0.05), transparent 55%),
       var(--bg-0);
     color:var(--ink);
     font-family:'Manrope', sans-serif;
     min-height:100vh;
   }
   a{color:inherit;}
-  ::selection{background:var(--pink); color:#0a0a12;}
+  ::selection{background:var(--pink); color:#ffffff;}
 
   .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
 
@@ -41,11 +41,11 @@
   header{
     position:sticky; top:0; z-index:40;
     backdrop-filter:blur(10px);
-    background:rgba(7,10,20,0.72);
+    background:rgba(255,255,255,0.82);
     border-bottom:1px solid var(--line);
   }
   .navbar{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1120px; margin:0 auto;}
-  .word{font-family:'Unbounded',sans-serif; font-weight:800; letter-spacing:0.18em; font-size:15px;}
+  .word{font-family:'Unbounded',sans-serif; font-weight:800; letter-spacing:0.18em; font-size:15px; color:var(--ink);}
   .navlinks{display:flex; align-items:center; gap:22px;}
   .navlinks button{
     background:none; border:none; color:var(--ink-dim); font-family:'Manrope';
@@ -55,29 +55,30 @@
 
   .bell-btn{
     position:relative; width:38px; height:38px; border-radius:50%;
-    border:1px solid var(--line); background:rgba(255,255,255,0.03);
+    border:1px solid var(--line); background:rgba(15,23,42,0.03);
     display:flex; align-items:center; justify-content:center; cursor:pointer;
+    color:var(--ink);
   }
   .bell-btn:hover{border-color:var(--pink);}
   .bell-dot{
     position:absolute; top:6px; right:7px; width:8px; height:8px; border-radius:50%;
-    background:var(--pink); box-shadow:0 0 6px var(--pink);
+    background:var(--pink); box-shadow:0 0 6px rgba(219,39,119,0.6);
   }
   .bell-panel{
     position:absolute; right:24px; top:64px; width:330px; max-width:calc(100vw - 32px);
     background:var(--bg-2); border:1px solid var(--line); border-radius:16px;
-    padding:14px; box-shadow:0 20px 50px rgba(0,0,0,0.5); display:none; z-index:50;
+    padding:14px; box-shadow:0 20px 50px rgba(15,23,42,0.16); display:none; z-index:50;
   }
   .bell-panel.open{display:block;}
   .bell-panel h4{margin:2px 6px 10px; font-size:13px; letter-spacing:0.08em; color:var(--ink-faint); font-weight:700; text-transform:uppercase;}
   .bell-item{padding:10px 8px; border-radius:10px; display:flex; gap:10px; align-items:flex-start;}
-  .bell-item:hover{background:rgba(255,255,255,0.04);}
+  .bell-item:hover{background:rgba(15,23,42,0.05);}
   .bell-date{
     flex:none; width:44px; text-align:center; font-family:'Unbounded'; font-weight:600;
     color:var(--pink-soft); font-size:12px; line-height:1.2; padding-top:2px;
   }
   .bell-date b{display:block; font-size:18px; color:var(--ink);}
-  .bell-title{font-size:13.5px; font-weight:600; line-height:1.3;}
+  .bell-title{font-size:13.5px; font-weight:600; line-height:1.3; color:var(--ink);}
   .bell-meta{font-size:12px; color:var(--ink-faint); margin-top:2px;}
   .bell-empty{padding:16px 8px; color:var(--ink-faint); font-size:13px;}
 
@@ -95,21 +96,21 @@
   }
   .metal-bar{
     width:130px; height:4px; margin:16px auto 0; border-radius:3px;
-    background:linear-gradient(90deg, #14265c, #3b82f6, #14265c);
-    box-shadow:0 0 12px rgba(59,130,246,0.55);
+    background:linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd);
+    box-shadow:0 2px 10px rgba(37,99,235,0.35);
   }
   .hero p.sub{color:var(--ink-dim); max-width:480px; margin:18px auto 0; font-size:15px; line-height:1.6;}
 
   .next-chip{
     display:inline-flex; align-items:center; gap:12px; margin-top:26px;
-    background:linear-gradient(90deg, rgba(255,89,198,0.14), rgba(155,140,255,0.10));
-    border:1px solid rgba(255,89,198,0.35); padding:10px 18px 10px 14px; border-radius:999px;
-    font-size:13.5px;
+    background:linear-gradient(90deg, rgba(219,39,119,0.08), rgba(124,58,237,0.06));
+    border:1px solid rgba(219,39,119,0.30); padding:10px 18px 10px 14px; border-radius:999px;
+    font-size:13.5px; color:var(--ink-dim);
   }
   .next-chip .pulse{width:8px; height:8px; border-radius:50%; background:var(--c,var(--pink)); box-shadow:0 0 8px var(--c,var(--pink)); flex:none;
     animation:pulse 1.8s infinite;}
   @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.35;}}
-  .next-chip b{color:var(--pink-soft); font-weight:700;}
+  .next-chip b{color:var(--ink); font-weight:700;}
   .next-chip .cd{color:var(--ink-faint);}
 
   /* ---------- GROUP TABS ---------- */
@@ -119,13 +120,13 @@
   }
   .grp-pill{
     display:flex; align-items:center; gap:7px; padding:8px 15px; border-radius:999px;
-    border:1px solid var(--line); background:rgba(255,255,255,0.02); cursor:pointer;
+    border:1px solid var(--line); background:rgba(15,23,42,0.02); cursor:pointer;
     font-size:13px; font-weight:600; color:var(--ink-dim); transition:border-color .15s, background .15s, color .15s;
   }
   .grp-pill .sw{width:9px; height:9px; border-radius:50%; background:var(--c); box-shadow:0 0 6px var(--c); flex:none;}
-  .grp-pill:hover{color:var(--ink); border-color:rgba(255,255,255,0.2);}
+  .grp-pill:hover{color:var(--ink); border-color:rgba(15,23,42,0.25);}
   .grp-pill.active{
-    color:var(--ink); border-color:var(--c); background:rgba(255,255,255,0.05);
+    color:var(--ink); border-color:var(--c); background:rgba(15,23,42,0.04);
     box-shadow:0 0 0 1px var(--c) inset;
   }
 
@@ -137,35 +138,34 @@
 
   .today-card{
     max-width:1120px; margin:0 auto; border:1px solid var(--line); border-radius:20px;
-    padding:22px 24px; background:linear-gradient(160deg, rgba(255,89,198,0.06), rgba(255,255,255,0.02));
+    padding:22px 24px; background:linear-gradient(160deg, rgba(219,39,119,0.05), var(--bg-1));
   }
   .today-empty{color:var(--ink-faint); font-size:14px;}
   .event-row{display:flex; gap:16px; padding:12px 0; border-top:1px solid var(--line);}
   .event-row:first-child{border-top:none;}
-  .event-time{flex:none; width:56px; font-family:'Unbounded'; font-size:12.5px; color:var(--lilac); padding-top:2px;}
-  .event-body h4{margin:0 0 4px; font-size:15px; font-weight:700; display:flex; align-items:center; flex-wrap:wrap; gap:8px;}
+  .event-time{flex:none; width:56px; font-family:'Unbounded'; font-size:12.5px; color:var(--lilac); padding-top:2px; font-weight:600;}
+  .event-body h4{margin:0 0 4px; font-size:15px; font-weight:700; display:flex; align-items:center; flex-wrap:wrap; gap:8px; color:var(--ink);}
   .event-body p{margin:0; font-size:13px; color:var(--ink-dim); line-height:1.5;}
   .new-tag{
-    display:inline-block; font-size:10px; font-weight:700; color:#1a0a14; background:var(--pink);
+    display:inline-block; font-size:10px; font-weight:700; color:#ffffff; background:var(--pink);
     padding:2px 7px; border-radius:6px; letter-spacing:0.03em;
-    box-shadow:0 0 10px rgba(255,89,198,0.6);
   }
   .grp-tag{
     display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700;
     color:var(--c); border:1px solid var(--c); padding:2px 8px 2px 6px; border-radius:999px;
   }
-  .grp-tag .sw{width:7px; height:7px; border-radius:50%; background:var(--c); box-shadow:0 0 5px var(--c);}
+  .grp-tag .sw{width:7px; height:7px; border-radius:50%; background:var(--c);}
 
   /* ---------- CALENDAR + PANEL ---------- */
   .cal-layout{max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;}
   @media (max-width:820px){.cal-layout{grid-template-columns:1fr;}}
 
-  .cal-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:rgba(255,255,255,0.02);}
+  .cal-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:var(--bg-1);}
   .cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
-  .cal-head h3{font-family:'Unbounded'; font-size:16px; letter-spacing:0.05em; margin:0; font-weight:600;}
+  .cal-head h3{font-family:'Unbounded'; font-size:16px; letter-spacing:0.05em; margin:0; font-weight:600; color:var(--ink);}
   .cal-nav{display:flex; gap:8px;}
   .cal-nav button{
-    width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:transparent;
+    width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:#ffffff;
     color:var(--ink); cursor:pointer; font-size:15px;
   }
   .cal-nav button:hover{border-color:var(--pink); color:var(--pink-soft);}
@@ -173,19 +173,19 @@
   .dow-row span{text-align:center; font-size:11px; color:var(--ink-faint); font-weight:700; letter-spacing:0.04em;}
   .day-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
   .day-cell{
-    aspect-ratio:1/0.95; border-radius:12px; border:1px solid transparent; background:rgba(255,255,255,0.02);
+    aspect-ratio:1/0.95; border-radius:12px; border:1px solid transparent; background:#ffffff;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
     cursor:pointer; position:relative; font-size:13px; color:var(--ink-dim); transition:border-color .15s, background .15s;
   }
   .day-cell.empty{visibility:hidden; cursor:default;}
-  .day-cell:hover{border-color:rgba(255,89,198,0.4);}
+  .day-cell:hover{border-color:rgba(219,39,119,0.35);}
   .day-cell.has-event{color:var(--ink); font-weight:700;}
   .dot-row{display:flex; gap:3px;}
   .dot-row .dot{width:5px; height:5px; border-radius:50%;}
   .day-cell.today{border-color:var(--lilac); box-shadow:0 0 0 1px var(--lilac) inset;}
-  .day-cell.selected{background:linear-gradient(160deg, rgba(255,89,198,0.22), rgba(155,140,255,0.12)); border-color:var(--pink);}
+  .day-cell.selected{background:linear-gradient(160deg, rgba(219,39,119,0.12), rgba(124,58,237,0.08)); border-color:var(--pink);}
 
-  .detail-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:rgba(255,255,255,0.02); position:sticky; top:84px; min-height:180px;}
+  .detail-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:var(--bg-1); position:sticky; top:84px; min-height:180px;}
   .detail-card h3{font-family:'Unbounded'; font-size:14px; letter-spacing:0.06em; margin:0 0 14px; color:var(--pink-soft);}
   .detail-empty{color:var(--ink-faint); font-size:13.5px; line-height:1.6;}
 
@@ -207,7 +207,6 @@
     .navlinks button{font-size:12.5px;}
     .bell-panel{right:12px;}
   }
-  <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
 </style>
 </head>
 <body>
@@ -234,7 +233,7 @@
 </header>
 
 <div class="hero">
-  <div class="eyebrow">SCHEDULE UPDATES · MULTI-GROUP</div>
+  <div class="eyebrow">SCHEDULE UPDATES</div>
   <h1>GNEST'S SCHEDULE<span class="script" id="monthScript">September</span></h1>
   <p class="sub">เลือกวงด้านล่างแล้วกดปฏิทินเพื่อดูงานของแต่ละวัน</p>
   <div class="next-chip" id="nextChip"></div>
@@ -281,13 +280,22 @@
 </footer>
 
 <script>
+// =========================================================
+// GROUPS — เพิ่มวงใหม่ได้ที่นี่ (สูงสุดแนะนำไม่เกิน 5-6 วงเพื่อให้แท็บไม่แน่นเกินไป)
+// id ต้องไม่ซ้ำกัน ใช้ตัวพิมพ์เล็กไม่มีเว้นวรรค เพราะ EVENTS ด้านล่างจะอ้างอิงด้วย id นี้
+// =========================================================
 const GROUPS = [
-  {id:"perses", name:"PERSES", color:"#4ade80"},
-  {id:"faviq",  name:"FAVIQ",  color:"#facc15"},
-  {id:"viis",   name:"VIIS",   color:"#f87171"},
-  {id:"tigger", name:"TIGGER", color:"#38bdf8"},
+  {id:"perses", name:"PERSES", color:"#16a34a"},
+  {id:"faviq",  name:"FAVIQ",  color:"#ca8a04"},
+  {id:"viis",   name:"VIIS",   color:"#dc2626"},
+  {id:"tigger", name:"TIGGER", color:"#0284c7"},
 ];
 
+// =========================================================
+// EVENTS — แต่ละงานต้องมี group: "id ของวง" ให้ตรงกับ GROUPS ด้านบน
+// ข้อมูลทั้งหมดดึงจากโปสเตอร์ตารางงานทางการของแต่ละวง (September 2026):
+// PERSES, FAVIQ, VIIS, TIGGER
+// =========================================================
 const EVENTS = [
   // ---- PERSES ----
   {group:"perses", date:"2026-09-03", time:"11:30", title:"GREEN WAVE 106.5 (LIVE)", meta:"Radio – Green Wave 106.5 · IG/TikTok – GREENWAVE1065"},
