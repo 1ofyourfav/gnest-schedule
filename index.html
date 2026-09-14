@@ -123,15 +123,6 @@
   }
   .hero-spacer{height:22px;}
 
-  .visit-badge{
-    position:fixed; right:18px; bottom:18px; z-index:30;
-    display:inline-flex; align-items:center; gap:7px;
-    font-size:12.5px; color:var(--ink-dim); background:#ffffff;
-    border:1px solid var(--line); padding:8px 16px; border-radius:999px;
-    box-shadow:0 8px 24px rgba(15,23,42,0.14);
-  }
-  .visit-badge b{color:var(--ink); font-weight:700;}
-
   .next-chip{
     display:inline-flex; align-items:center; gap:12px; margin-top:26px;
     background:linear-gradient(90deg, rgba(219,39,119,0.08), rgba(124,58,237,0.06));
@@ -342,8 +333,6 @@
   <span class="word">FANCLUB·HUB</span>
   Made by a fan, for fans — @evrydyhyun
 </footer>
-
-<div class="visit-badge" id="visitBadge">👀 กำลังนับยอดเข้าชม...</div>
 
 <script>
 const LAST_UPDATED = "2026-09-12";
@@ -664,19 +653,6 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
   });
 });
 
-function renderVisitCount(){
-  const el = document.getElementById('visitBadge');
-  fetch('https://counterapi.dev/v1/gnest-schedule-fanclubhub/visits/up')
-    .then(r => r.json())
-    .then(data => {
-      const n = Number(data.count || 0).toLocaleString();
-      el.innerHTML = `👀 ยอดเข้าชมทั้งหมด <b>${n}</b> ครั้ง`;
-    })
-    .catch(() => {
-      el.innerHTML = `👀 ยอดเข้าชมทั้งหมด <b>1</b> ครั้ง`;
-    });
-}
-
 function renderLastUpdated(){
   const el = document.getElementById('eyebrowDate');
   if(!el) return;
@@ -686,7 +662,6 @@ function renderLastUpdated(){
 }
 
 renderAll();
-renderVisitCount();
 renderLastUpdated();
 </script>
 </body>
