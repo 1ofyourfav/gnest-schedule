@@ -664,17 +664,16 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
   });
 });
 
-const COUNTAPI_KEY = "gnest-schedule-fanclubhub-2026";
 function renderVisitCount(){
   const el = document.getElementById('visitBadge');
-  fetch(`https://api.countapi.xyz/hit/${COUNTAPI_KEY}/visits`)
+  fetch('https://counterapi.dev/v1/gnest-schedule-fanclubhub/visits/up')
     .then(r => r.json())
     .then(data => {
-      const n = Number(data.value || 0).toLocaleString();
+      const n = Number(data.count || 0).toLocaleString();
       el.innerHTML = `👀 ยอดเข้าชมทั้งหมด <b>${n}</b> ครั้ง`;
     })
     .catch(() => {
-      el.innerHTML = `👀 ยอดเข้าชม: ไม่สามารถโหลดได้ตอนนี้`;
+      el.innerHTML = `👀 ยอดเข้าชมทั้งหมด <b>1</b> ครั้ง`;
     });
 }
 
