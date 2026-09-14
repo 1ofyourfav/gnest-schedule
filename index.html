@@ -3,7 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stage Schedule Hub</title>
+<title>GNEST'S SCHEDULE — Fan Schedule Hub</title>
+<meta name="description" content="ตารางงานของ PERSES, FAVIQ, VIIS และ TIGGER อัปเดตในที่เดียว มีปฏิทินกดดูรายวัน แจ้งเตือนงานที่กำลังจะถึง">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="GNEST'S SCHEDULE — Fan Schedule Hub">
+<meta property="og:description" content="ตารางงานของ PERSES, FAVIQ, VIIS และ TIGGER อัปเดตในที่เดียว มีปฏิทินกดดูรายวัน แจ้งเตือนงานที่กำลังจะถึง">
+<meta property="og:url" content="https://evrywboo.github.io/gnest-schedule/">
+<meta property="og:image" content="https://evrywboo.github.io/gnest-schedule/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GNEST'S SCHEDULE — Fan Schedule Hub">
+<meta name="twitter:description" content="ตารางงานของ PERSES, FAVIQ, VIIS และ TIGGER อัปเดตในที่เดียว มีปฏิทินกดดูรายวัน แจ้งเตือนงานที่กำลังจะถึง">
+<meta name="twitter:image" content="https://evrywboo.github.io/gnest-schedule/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Yellowtail&family=Saira+Condensed:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -82,6 +96,14 @@
   .bell-meta{font-size:12px; color:var(--ink-faint); margin-top:2px;}
   .bell-empty{padding:16px 8px; color:var(--ink-faint); font-size:13px;}
 
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#ffffff; font-size:13.5px; font-weight:600;
+    padding:12px 20px; border-radius:999px; box-shadow:0 12px 30px rgba(15,23,42,0.25);
+    opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:60; white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
   /* ---------- HERO ---------- */
   .hero{padding:64px 24px 28px; text-align:center; position:relative;}
   .eyebrow{font-size:13px; color:var(--ink-faint); letter-spacing:0.14em; margin-bottom:6px;}
@@ -99,7 +121,16 @@
     background:linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd);
     box-shadow:0 2px 10px rgba(37,99,235,0.35);
   }
-  .hero p.sub{color:var(--ink-dim); max-width:480px; margin:18px auto 0; font-size:15px; line-height:1.6;}
+  .hero-spacer{height:22px;}
+
+  .visit-badge{
+    position:fixed; right:18px; bottom:18px; z-index:30;
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:12.5px; color:var(--ink-dim); background:#ffffff;
+    border:1px solid var(--line); padding:8px 16px; border-radius:999px;
+    box-shadow:0 8px 24px rgba(15,23,42,0.14);
+  }
+  .visit-badge b{color:var(--ink); font-weight:700;}
 
   .next-chip{
     display:inline-flex; align-items:center; gap:12px; margin-top:26px;
@@ -157,9 +188,9 @@
   .grp-tag .sw{width:7px; height:7px; border-radius:50%; background:var(--c);}
 
   /* ---------- CALENDAR + PANEL ---------- */
-.cal-layout{max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;}
+  .cal-layout{max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;}
   @media (max-width:820px){.cal-layout{grid-template-columns:1fr;}}
- 
+
   .cal-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:var(--bg-1);}
   .cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
   .cal-head h3{font-family:'Unbounded'; font-size:16px; letter-spacing:0.05em; margin:0; font-weight:600; color:var(--ink);}
@@ -184,7 +215,7 @@
   .dot-row .dot{width:5px; height:5px; border-radius:50%;}
   .day-cell.today{border-color:var(--lilac); box-shadow:0 0 0 1px var(--lilac) inset;}
   .day-cell.selected{background:linear-gradient(160deg, rgba(219,39,119,0.12), rgba(124,58,237,0.08)); border-color:var(--pink);}
- 
+
   .detail-card{border:1px solid var(--line); border-radius:20px; padding:20px; background:var(--bg-1); position:sticky; top:84px; min-height:180px;}
   .detail-card h3{font-family:'Unbounded'; font-size:14px; letter-spacing:0.06em; margin:0 0 14px; color:var(--pink-soft);}
   .detail-empty{color:var(--ink-faint); font-size:13.5px; line-height:1.6;}
@@ -198,16 +229,16 @@
   .list-date .m{font-size:11px; color:var(--ink-faint); letter-spacing:0.06em;}
   .list-events .event-row{padding:10px 0;}
   .list-empty{color:var(--ink-faint); font-size:14px; text-align:center; padding:30px 0;}
- 
+
   footer{padding:40px 24px 60px; text-align:center; color:var(--ink-faint); font-size:12.5px; border-top:1px solid var(--line); margin-top:20px;}
   footer .word{display:block; margin-bottom:8px; color:var(--ink-dim);}
- 
+
   @media (max-width:560px){
     .navlinks{gap:14px;}
     .navlinks button{font-size:12.5px;}
     .bell-panel{right:12px;}
   }
- 
+
   @media (max-width:480px){
     .navbar{padding:12px 14px; gap:8px;}
     .word{font-size:12.5px; letter-spacing:0.1em;}
@@ -232,7 +263,7 @@
     .event-body p{font-size:12px;}
     .list-group{grid-template-columns:52px 1fr; gap:10px;}
     .list-date .d{font-size:22px;}
-
+  }
 </style>
 </head>
 <body>
@@ -264,21 +295,21 @@
 </header>
 
 <div class="toast" id="shareToast"></div>
- 
+
 <div class="hero">
   <div class="eyebrow" id="eyebrowDate">SCHEDULE UPDATES</div>
   <h1>GNEST'S SCHEDULE<span class="script" id="monthScript">September</span></h1>
   <div class="hero-spacer"></div>
   <div class="next-chip" id="nextChip"></div>
 </div>
- 
+
 <div class="group-bar" id="groupBar"></div>
- 
+
 <section id="today-sec">
   <div class="section-head"><h2>Today</h2><span id="todayDateLabel"></span></div>
   <div class="today-card" id="todayCard"></div>
 </section>
- 
+
 <section id="cal-sec">
   <div class="section-head"><h2>Calendar</h2><span>กดวันที่เพื่อดูรายละเอียด</span></div>
   <div class="cal-layout">
@@ -301,22 +332,22 @@
     </div>
   </div>
 </section>
- 
+
 <section id="list-sec">
   <div class="section-head"><h2>All events</h2><span>September 2026</span></div>
   <div class="list-wrap" id="listWrap"></div>
 </section>
- 
+
 <footer>
   <span class="word">FANCLUB·HUB</span>
   Made by a fan, for fans — @evrydyhyun
 </footer>
- 
+
 <div class="visit-badge" id="visitBadge">👀 กำลังนับยอดเข้าชม...</div>
- 
+
 <script>
 const LAST_UPDATED = "2026-09-12";
- 
+
 const GROUPS = [
   {id:"perses", name:"PERSES", color:"#16a34a"},
   {id:"faviq",  name:"FAVIQ",  color:"#ca8a04"},
@@ -324,11 +355,8 @@ const GROUPS = [
   {id:"tigger", name:"TIGGER", color:"#0284c7"},
 ];
 
-// =========================================================
-// อย่าลืมเข้ามาแก้เพิ่ม/ลด NEW ในตาราง
-// =========================================================
-const EVENTS = [
-  # ---- PERSES ----
+const EVENTS_RAW = `
+# ---- PERSES ----
 perses | 2026-09-03 | 11:30 | GREEN WAVE 106.5 (LIVE) | Radio – Green Wave 106.5 · IG/TikTok – GREENWAVE1065
 perses | 2026-09-03 | 21:45 | รายการ T-POP STAGE | ช่อง Workpoint 23 · YouTube – T-POP STAGE (LIVE)
 perses | 2026-09-05 | 16:00 | CATEXPOP เชียงใหม่ (SHOW) | Chiang Mai University Convention Center · งานปิด เฉพาะผู้มีสิทธิ์เข้างาน | NEW
@@ -342,7 +370,7 @@ perses | 2026-09-14 | 19:00 | รายการ ทศกัณฐ์ รัน
 perses | 2026-09-15 | 19:00 | FLEX 104.5 (LIVE) | Radio – Flex 104.5 · Facebook/YouTube – FLEXCONNECT · Studio Flex 104.5
 perses | 2026-09-28 | 19:00 | รายการ เพลงแคชสั่งฮ์ PODCAST | YouTube – วินฮ์
 perses | 2026-09-29 | 19:00 | PERSES '4 YEARS ANNIVERSARY' (LIVE) | IG / TikTok – PERSES_OFFICIAL
- 
+
 # ---- FAVIQ ----
 faviq | 2026-09-01 | 18:30 | รายการ TMC LIVE SPECIAL | TMC LIVE STUDIO 4th Fl., Siam Paragon · YouTube/TikTok – TMCCOUNTDOWN
 faviq | 2026-09-02 | 18:00 | รายการ TH HEADLINE | YouTube – TH HEADLINE · Weibo – 中泰头条
@@ -356,7 +384,7 @@ faviq | 2026-09-12 | 17:00 | MCHOICE & MINT AWARDS 2026 (SHOW) | Iconsiam Hall, 
 faviq | 2026-09-16 | 18:30 | CTW SHAKE YOUR BODY | centralwOrld Hall Live, 8th Fl. · งานปิด เฉพาะผู้มีสิทธิ์เข้างาน
 faviq | 2026-09-30 | 16:00 | ROBINSON SUPER JEANS WEEK 2026 (SHOW) | ลาน Cascata ชั้น G ฟิวเจอร์พาร์ค รังสิต · งานเปิด ไม่มีรวมพล/ไม่รับของขวัญ
 faviq | 2026-09-30 | 19:30 | NINEENTERTAIN 24TH ANNIVERSARY CHARITY CONCERT (SHOW) | Parc Paragon · งานเปิด ไม่มีรวมพล/ไม่รับของขวัญ
- 
+
 # ---- VIIS ----
 viis | 2026-09-03 | 17:00 | Y ENTERTAIN AWARDS 2026 (PLAIFAH) | Carpet Time 17:00 · Iconsiam Hall, 7th Floor, ICONSIAM · งานปิด เฉพาะผู้มีสิทธิ์เข้างาน
 viis | 2026-09-06 | 18:45 | PRAEW CHARITY 2026 (SHOW) | Nex Hall, 5th Floor, Siam Paragon · งานเปิด ไม่มีรวมพล/ไม่รับของขวัญ
@@ -366,13 +394,13 @@ viis | 2026-09-16 | 18:30 | CTW SHAKE YOUR BODY | centralwOrld Hall Live, 8th Fl
 viis | 2026-09-23 | 19:00 | VIIS: DON'T MISS THE PARTY | Save the Date · Sphere Gallery 1, M Floor, EmSphere · งานเปิด ไม่มีรวมพล/ไม่รับของขวัญ
 viis | 2026-09-27 | 18:00 | รายการ THAILAND'S CHOSEN ONE (SONG FOR EUROVISION SONG CONTEST) (TARA) | TV3HD/App – 3plus · Website – CH3plus · YouTube – Eurovision
 viis | 2026-09-30 | 19:30 | NINEENTERTAIN 24TH ANNIVERSARY CHARITY CONCERT (SHOW) | Parc Paragon
- 
+
 # ---- TIGGER ----
 tigger | 2026-09-01 | 18:30 | รายการ TMC LIVE SPECIAL | TMC LIVE STUDIO, 4th Floor, Siam Paragon · YouTube/TikTok – TMCCOUNTDOWN
 tigger | 2026-09-06 | 18:25 | PRAEW CHARITY 2026 (SHOW) | Nex Hall, 5th Floor, Siam Paragon
 tigger | 2026-09-27 | 18:00 | รายการ THAILAND'S CHOSEN ONE (SONG FOR EUROVISION SONG CONTEST) | TV3HD/App – 3plus · Website – CH3plus · YouTube – Eurovision
 tigger | 2026-09-30 | 19:30 | NINEENTERTAIN 24TH ANNIVERSARY CHARITY CONCERT (SHOW) | Parc Paragon
- 
+
 `;
 
 function parseEvents(raw){
@@ -387,14 +415,14 @@ function parseEvents(raw){
       return ev;
     });
 }
- 
+
 const EVENTS = parseEvents(EVENTS_RAW);
- 
+
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
- 
+
 function groupInfo(id){ return GROUPS.find(g=>g.id===id) || {id, name:id, color:"#888"}; }
 function toKey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
- 
+
 let activeGroup = "all";
 function allEvents(){ return activeGroup==="all" ? EVENTS : EVENTS.filter(e=>e.group===activeGroup); }
 function eventsFor(key){ return allEvents().filter(e=>e.date===key).sort((a,b)=>a.time.localeCompare(b.time)); }
@@ -402,7 +430,7 @@ function groupsOn(key){
   const ids = [...new Set(EVENTS.filter(e=>e.date===key && (activeGroup==="all"||e.group===activeGroup)).map(e=>e.group))];
   return ids.map(groupInfo);
 }
- 
+
 let now = new Date();
 let view = {year: now.getFullYear(), month: now.getMonth()};
 if(!EVENTS.some(e=>e.date.startsWith(`${view.year}-${String(view.month+1).padStart(2,'0')}`))){
@@ -410,14 +438,14 @@ if(!EVENTS.some(e=>e.date.startsWith(`${view.year}-${String(view.month+1).padSta
   view = {year: parseInt(first[0]), month: parseInt(first[1])-1};
 }
 let selectedKey = null;
- 
+
 function todayKey(){ return toKey(now.getFullYear(), now.getMonth(), now.getDate()); }
- 
+
 function grpTag(e){
   const g = groupInfo(e.group);
   return `<span class="grp-tag" style="--c:${g.color}"><span class="sw"></span>${g.name}</span>`;
 }
- 
+
 function renderEventRow(e){
   return `<div class="event-row">
     <div class="event-time">${e.time}</div>
@@ -427,7 +455,7 @@ function renderEventRow(e){
     </div>
   </div>`;
 }
- 
+
 function renderGroupBar(){
   const bar = document.getElementById('groupBar');
   let html = `<div class="grp-pill ${activeGroup==='all'?'active':''}" data-id="all" style="--c:#ffffff"><span class="sw" style="background:linear-gradient(135deg,var(--pink),var(--lilac))"></span>ทั้งหมด</div>`;
@@ -440,7 +468,7 @@ function renderGroupBar(){
     });
   });
 }
- 
+
 function renderToday(){
   document.getElementById('todayDateLabel').textContent =
     now.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
@@ -452,7 +480,7 @@ function renderToday(){
     card.innerHTML = evs.map(renderEventRow).join('');
   }
 }
- 
+
 function nextEvent(){
   const nowTime = now.getTime();
   const upcoming = allEvents()
@@ -461,7 +489,7 @@ function nextEvent(){
     .sort((a,b)=>a.ts-b.ts);
   return upcoming[0] || null;
 }
- 
+
 function daysUntil(ts){
   const diff = ts - now.getTime();
   const days = Math.round(diff/86400000);
@@ -469,7 +497,7 @@ function daysUntil(ts){
   if(days===1) return "in 1 day";
   return `in ${days} days`;
 }
- 
+
 function renderNextChip(){
   const n = nextEvent();
   const el = document.getElementById('nextChip');
@@ -480,7 +508,7 @@ function renderNextChip(){
   el.style.setProperty('--c', g.color);
   el.innerHTML = `<span class="pulse"></span> Next up · <span style="color:${g.color}; font-weight:700;">${g.name}</span> — <b>${n.title}</b> <span class="cd">· ${label}, ${n.time} · ${daysUntil(n.ts)}</span>`;
 }
- 
+
 function renderBell(){
   const nowTime = now.getTime();
   const upcoming = allEvents()
@@ -506,7 +534,7 @@ function renderBell(){
     </div>`;
   }).join('');
 }
- 
+
 function renderCalendar(){
   document.getElementById('calTitle').textContent = `${MONTH_NAMES[view.month]} ${view.year}`;
   const grid = document.getElementById('dayGrid');
@@ -533,7 +561,7 @@ function renderCalendar(){
     });
   });
 }
- 
+
 function renderDetail(){
   const body = document.getElementById('detailBody');
   const title = document.querySelector('#detailCard h3');
@@ -554,7 +582,7 @@ function renderDetail(){
     body.innerHTML = evs.map(renderEventRow).join('');
   }
 }
- 
+
 function renderList(){
   const dates = [...new Set(allEvents().map(e=>e.date))].sort();
   const wrap = document.getElementById('listWrap');
@@ -571,7 +599,7 @@ function renderList(){
     </div>`;
   }).join('');
 }
- 
+
 function renderAll(){
   renderGroupBar();
   renderToday();
@@ -581,7 +609,7 @@ function renderAll(){
   renderDetail();
   renderList();
 }
- 
+
 document.getElementById('prevMonth').addEventListener('click', ()=>{
   view.month--; if(view.month<0){view.month=11; view.year--;}
   renderCalendar();
@@ -590,7 +618,7 @@ document.getElementById('nextMonth').addEventListener('click', ()=>{
   view.month++; if(view.month>11){view.month=0; view.year++;}
   renderCalendar();
 });
- 
+
 const bellBtn = document.getElementById('bellBtn');
 const bellPanel = document.getElementById('bellPanel');
 bellBtn.addEventListener('click', (e)=>{
@@ -600,7 +628,7 @@ bellBtn.addEventListener('click', (e)=>{
 document.addEventListener('click', (e)=>{
   if(!bellPanel.contains(e.target) && e.target!==bellBtn){ bellPanel.classList.remove('open'); }
 });
- 
+
 function showToast(msg){
   const t = document.getElementById('shareToast');
   t.textContent = msg;
@@ -608,11 +636,11 @@ function showToast(msg){
   clearTimeout(showToast._timer);
   showToast._timer = setTimeout(()=> t.classList.remove('show'), 2600);
 }
- 
+
 document.getElementById('shareBtn').addEventListener('click', async ()=>{
   const shareData = {
     title: document.title,
-    text: "ตารางงาน PERSES, FAVIQ, VIIS, TIGGER อัปเดตล่าสุดที่นี่ 🎉",
+    text: "อัปเดตตารางงาน PERSES, FAVIQ, VIIS, TIGGER",
     url: window.location.href
   };
   if(navigator.share){
@@ -627,7 +655,7 @@ document.getElementById('shareBtn').addEventListener('click', async ()=>{
     }
   }
 });
- 
+
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -635,7 +663,7 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
     document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
   });
 });
- 
+
 const COUNTAPI_KEY = "gnest-schedule-fanclubhub-2026";
 function renderVisitCount(){
   const el = document.getElementById('visitBadge');
@@ -649,7 +677,7 @@ function renderVisitCount(){
       el.innerHTML = `👀 ยอดเข้าชม: ไม่สามารถโหลดได้ตอนนี้`;
     });
 }
- 
+
 function renderLastUpdated(){
   const el = document.getElementById('eyebrowDate');
   if(!el) return;
@@ -657,7 +685,7 @@ function renderLastUpdated(){
   const label = d.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
   el.textContent = `อัปเดตตารางงานล่าสุด: ${label}`;
 }
- 
+
 renderAll();
 renderVisitCount();
 renderLastUpdated();
