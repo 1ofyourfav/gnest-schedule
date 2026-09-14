@@ -375,11 +375,26 @@ tigger | 2026-09-30 | 19:30 | NINEENTERTAIN 24TH ANNIVERSARY CHARITY CONCERT (SH
  
 `;
 
+function parseEvents(raw){
+  return raw.split("\n")
+    .map(line => line.trim())
+    .filter(line => line.length > 0 && !line.startsWith("#"))
+    .map(line => {
+      const parts = line.split("|").map(p => p.trim());
+      const [group, date, time, title, meta = "", flag = ""] = parts;
+      const ev = {group, date, time, title, meta};
+      if(flag.toUpperCase() === "NEW") ev.isNew = true;
+      return ev;
+    });
+}
+ 
+const EVENTS = parseEvents(EVENTS_RAW);
+ 
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
+ 
 function groupInfo(id){ return GROUPS.find(g=>g.id===id) || {id, name:id, color:"#888"}; }
 function toKey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
-
+ 
 let activeGroup = "all";
 function allEvents(){ return activeGroup==="all" ? EVENTS : EVENTS.filter(e=>e.group===activeGroup); }
 function eventsFor(key){ return allEvents().filter(e=>e.date===key).sort((a,b)=>a.time.localeCompare(b.time)); }
@@ -387,7 +402,7 @@ function groupsOn(key){
   const ids = [...new Set(EVENTS.filter(e=>e.date===key && (activeGroup==="all"||e.group===activeGroup)).map(e=>e.group))];
   return ids.map(groupInfo);
 }
-
+ 
 let now = new Date();
 let view = {year: now.getFullYear(), month: now.getMonth()};
 if(!EVENTS.some(e=>e.date.startsWith(`${view.year}-${String(view.month+1).padStart(2,'0')}`))){
@@ -395,14 +410,14 @@ if(!EVENTS.some(e=>e.date.startsWith(`${view.year}-${String(view.month+1).padSta
   view = {year: parseInt(first[0]), month: parseInt(first[1])-1};
 }
 let selectedKey = null;
-
+ 
 function todayKey(){ return toKey(now.getFullYear(), now.getMonth(), now.getDate()); }
-
+ 
 function grpTag(e){
   const g = groupInfo(e.group);
   return `<span class="grp-tag" style="--c:${g.color}"><span class="sw"></span>${g.name}</span>`;
 }
-
+ 
 function renderEventRow(e){
   return `<div class="event-row">
     <div class="event-time">${e.time}</div>
@@ -412,7 +427,7 @@ function renderEventRow(e){
     </div>
   </div>`;
 }
-
+ 
 function renderGroupBar(){
   const bar = document.getElementById('groupBar');
   let html = `<div class="grp-pill ${activeGroup==='all'?'active':''}" data-id="all" style="--c:#ffffff"><span class="sw" style="background:linear-gradient(135deg,var(--pink),var(--lilac))"></span>ทั้งหมด</div>`;
@@ -425,7 +440,7 @@ function renderGroupBar(){
     });
   });
 }
-
+ 
 function renderToday(){
   document.getElementById('todayDateLabel').textContent =
     now.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
@@ -437,7 +452,7 @@ function renderToday(){
     card.innerHTML = evs.map(renderEventRow).join('');
   }
 }
-
+ 
 function nextEvent(){
   const nowTime = now.getTime();
   const upcoming = allEvents()
@@ -446,7 +461,7 @@ function nextEvent(){
     .sort((a,b)=>a.ts-b.ts);
   return upcoming[0] || null;
 }
-
+ 
 function daysUntil(ts){
   const diff = ts - now.getTime();
   const days = Math.round(diff/86400000);
@@ -454,7 +469,7 @@ function daysUntil(ts){
   if(days===1) return "in 1 day";
   return `in ${days} days`;
 }
-
+ 
 function renderNextChip(){
   const n = nextEvent();
   const el = document.getElementById('nextChip');
@@ -465,7 +480,7 @@ function renderNextChip(){
   el.style.setProperty('--c', g.color);
   el.innerHTML = `<span class="pulse"></span> Next up · <span style="color:${g.color}; font-weight:700;">${g.name}</span> — <b>${n.title}</b> <span class="cd">· ${label}, ${n.time} · ${daysUntil(n.ts)}</span>`;
 }
-
+ 
 function renderBell(){
   const nowTime = now.getTime();
   const upcoming = allEvents()
@@ -491,7 +506,7 @@ function renderBell(){
     </div>`;
   }).join('');
 }
-
+ 
 function renderCalendar(){
   document.getElementById('calTitle').textContent = `${MONTH_NAMES[view.month]} ${view.year}`;
   const grid = document.getElementById('dayGrid');
@@ -518,14 +533,14 @@ function renderCalendar(){
     });
   });
 }
-
+ 
 function renderDetail(){
   const body = document.getElementById('detailBody');
   const title = document.querySelector('#detailCard h3');
   if(!selectedKey){
     title.textContent = 'Selected day';
     body.className = 'detail-empty';
-    body.innerHTML = 'เลือกวันที่ทางซ้ายเพื่อดูงานในวันนั้น';
+    body.innerHTML = 'เลือกวันที่จากปฏิทินเพื่อดูงานในวันนั้น';
     return;
   }
   const d = new Date(selectedKey);
@@ -539,7 +554,7 @@ function renderDetail(){
     body.innerHTML = evs.map(renderEventRow).join('');
   }
 }
-
+ 
 function renderList(){
   const dates = [...new Set(allEvents().map(e=>e.date))].sort();
   const wrap = document.getElementById('listWrap');
@@ -556,7 +571,7 @@ function renderList(){
     </div>`;
   }).join('');
 }
-
+ 
 function renderAll(){
   renderGroupBar();
   renderToday();
@@ -566,8 +581,7 @@ function renderAll(){
   renderDetail();
   renderList();
 }
-
-// ---------- Interactions ----------
+ 
 document.getElementById('prevMonth').addEventListener('click', ()=>{
   view.month--; if(view.month<0){view.month=11; view.year--;}
   renderCalendar();
@@ -576,7 +590,7 @@ document.getElementById('nextMonth').addEventListener('click', ()=>{
   view.month++; if(view.month>11){view.month=0; view.year++;}
   renderCalendar();
 });
-
+ 
 const bellBtn = document.getElementById('bellBtn');
 const bellPanel = document.getElementById('bellPanel');
 bellBtn.addEventListener('click', (e)=>{
@@ -586,7 +600,34 @@ bellBtn.addEventListener('click', (e)=>{
 document.addEventListener('click', (e)=>{
   if(!bellPanel.contains(e.target) && e.target!==bellBtn){ bellPanel.classList.remove('open'); }
 });
-
+ 
+function showToast(msg){
+  const t = document.getElementById('shareToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(()=> t.classList.remove('show'), 2600);
+}
+ 
+document.getElementById('shareBtn').addEventListener('click', async ()=>{
+  const shareData = {
+    title: document.title,
+    text: "ตารางงาน PERSES, FAVIQ, VIIS, TIGGER อัปเดตล่าสุดที่นี่ 🎉",
+    url: window.location.href
+  };
+  if(navigator.share){
+    try{ await navigator.share(shareData); }
+    catch(err){ /* ผู้ใช้กดยกเลิกการแชร์ ไม่ต้องแจ้งเตือน */ }
+  } else {
+    try{
+      await navigator.clipboard.writeText(shareData.url);
+      showToast("คัดลอกลิงก์เว็บไซต์แล้ว 🎉");
+    }catch(err){
+      showToast("คัดลอกลิงก์ไม่สำเร็จ ลองคัดลอกจาก address bar แทน");
+    }
+  }
+});
+ 
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -594,9 +635,32 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
     document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
   });
 });
-
-// ---------- Init ----------
+ 
+const COUNTAPI_KEY = "gnest-schedule-fanclubhub-2026";
+function renderVisitCount(){
+  const el = document.getElementById('visitBadge');
+  fetch(`https://api.countapi.xyz/hit/${COUNTAPI_KEY}/visits`)
+    .then(r => r.json())
+    .then(data => {
+      const n = Number(data.value || 0).toLocaleString();
+      el.innerHTML = `👀 ยอดเข้าชมทั้งหมด <b>${n}</b> ครั้ง`;
+    })
+    .catch(() => {
+      el.innerHTML = `👀 ยอดเข้าชม: ไม่สามารถโหลดได้ตอนนี้`;
+    });
+}
+ 
+function renderLastUpdated(){
+  const el = document.getElementById('eyebrowDate');
+  if(!el) return;
+  const d = new Date(LAST_UPDATED + "T00:00:00");
+  const label = d.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
+  el.textContent = `อัปเดตตารางงานล่าสุด: ${label}`;
+}
+ 
 renderAll();
+renderVisitCount();
+renderLastUpdated();
 </script>
 </body>
 </html>
